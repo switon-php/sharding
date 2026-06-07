@@ -14,8 +14,10 @@ use Throwable;
  *
  * Log category: sharding validation.
  *
+ * Join tuples are produced by the query layer; sharding keeps them opaque
+ * (table target is typically a string or a query value object).
+ *
  * @see \Switon\Sharding\ShardingManager
- * @see \Switon\Query\ShardingJoinValidator
  */
 #[EventLevel(Severity::ERROR)]
 class ShardValidationFailed implements JsonSerializable
@@ -24,7 +26,7 @@ class ShardValidationFailed implements JsonSerializable
      * @param string $reason Failure reason.
      * @param array<string, list<string>> $mainShards Main shards.
      * @param array<string, mixed> $context Sharding context.
-     * @param list<array{0: string|\Switon\Query\Table, 1: string|null, 2: string|null, 3: string|null}> $joins Join metadata.
+     * @param list<array{0: string|object, 1: string|null, 2: string|null, 3: string|null}> $joins Join metadata.
      * @param string $exceptionMessage Exception message.
      * @param string $exceptionClass Exception class.
      * @param string|null $exceptionFile Exception file.
@@ -45,7 +47,7 @@ class ShardValidationFailed implements JsonSerializable
     /**
      * @param array<string, list<string>> $mainShards
      * @param array<string, mixed> $context
-     * @param list<array{0: string|\Switon\Query\Table, 1: string|null, 2: string|null, 3: string|null}> $joins
+     * @param list<array{0: string|object, 1: string|null, 2: string|null, 3: string|null}> $joins
      */
     public static function from(array $mainShards, array $context, array $joins, Throwable $exception): self
     {
